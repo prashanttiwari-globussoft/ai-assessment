@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Assessment Tool</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Developer Skills Assessment</h1>
+        <p>Customize your coding test based on your needs</p>
+        
+        <% if (error) { %>
+            <div class="alert error"><%= error %></div>
+        <% } %>
+        
+        <div class="assessment-options">
+            <div class="option-card" id="resume-option">
+                <h3>Resume-Based Assessment</h3>
+                <p>Get questions tailored to your experience</p>
+                <form id="uploadForm" action="/generate-questions" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="resume">Upload your resume:</label>
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="resume" name="resume" accept=".pdf,.docx,.txt" required>
+                            <label for="resume" class="file-upload-label">
+                                <span id="file-name">Choose file (PDF, DOCX, TXT)</span>
+                                <span class="browse-btn">Browse</span>
+                            </label>
+                        </div>
+                        <div class="file-hint">Max size: 5MB</div>
+                        <div id="upload-progress" class="progress-bar" style="display: none;">
+                            <div class="progress"></div>
+                            <span class="progress-text">Processing...</span>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Generate Test</button>
+                </form>
+            </div>
+
+            <div class="option-divider">
+                <span>OR</span>
+            </div>
+
+            <div class="option-card" id="skill-option">
+                <h3>Skill-Based Assessment</h3>
+                <p>Select specific skills to test</p>
+                <form id="skillForm" action="/generate-skill-questions" method="POST">
+                    <div class="form-group">
+                        <label>Select Skills to Assess:</label>
+                        <div class="skill-checkboxes">
+                            <label class="skill-option">
+                                <input type="checkbox" name="skills" value="javascript" checked>
+                                <span>JavaScript</span>
+                            </label>
+                            <label class="skill-option">
+                                <input type="checkbox" name="skills" value="python">
+                                <span>Python</span>
+                            </label>
+                            <label class="skill-option">
+                                <input type="checkbox" name="skills" value="java">
+                                <span>Java</span>
+                            </label>
+                            <label class="skill-option">
+                                <input type="checkbox" name="skills" value="sql">
+                                <span>SQL</span>
+                            </label>
+                            <label class="skill-option">
+                                <input type="checkbox" name="skills" value="algorithms">
+                                <span>Algorithms</span>
+                            </label>
+                            <label class="skill-option">
+                                <input type="checkbox" name="skills" value="data-structures">
+                                <span>Data Structures</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Difficulty Level:</label>
+                        <select name="difficulty" class="difficulty-select">
+                            <option value="mixed">Mixed (Recommended)</option>
+                            <option value="easy">Easy Only</option>
+                            <option value="medium">Medium Only</option>
+                            <option value="hard">Hard Only</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Number of Questions:</label>
+                        <input type="number" name="questionCount" min="3" max="15" value="5" class="question-count">
+                    </div>
+                    <button type="submit" class="btn-primary">Generate Test</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/script.js"></script>
+</body>
+</html>

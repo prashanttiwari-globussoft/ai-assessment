@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Results</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container results-container">
+        <h1>Your Test Results</h1>
+        <div class="test-summary">
+            <div class="summary-card total-score">
+                <h3>Total Score</h3>
+                <div class="score"><%= totalScore %>/<%= maxScore %></div>
+                <div class="percentage"><%= ((totalScore/maxScore)*100).toFixed(1) %>%</div>
+            </div>
+            <div class="summary-card time-spent">
+                <h3>Time Spent</h3>
+                <div class="time"><%= timeSpent %></div>
+            </div>
+        </div>
+        
+        <div class="score-breakdown">
+            <h2>Score Breakdown</h2>
+            <div class="breakdown-grid">
+                <div class="breakdown-card easy">
+                    <h3>Easy Questions</h3>
+                    <div class="score"><%= scores.easy.earned %>/<%= scores.easy.total %></div>
+                </div>
+                <div class="breakdown-card medium">
+                    <h3>Medium Questions</h3>
+                    <div class="score"><%= scores.medium.earned %>/<%= scores.medium.total %></div>
+                </div>
+                <div class="breakdown-card hard">
+                    <h3>Hard Question</h3>
+                    <div class="score"><%= scores.hard.earned %>/<%= scores.hard.total %></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="performance-feedback">
+            <h2>Performance Feedback</h2>
+            <div class="feedback-content">
+                <%- feedback %>
+            </div>
+        </div>
+        
+        <div class="detailed-results">
+            <h2>Question Review</h2>
+            <% questions.forEach((q, index) => { %>
+                <div class="question-review">
+                    <h3>Question <%= index + 1 %>: <%= q.question %></h3>
+                    <p><strong>Your Answer:</strong> <%= answers[q.id] || "Not answered" %></p>
+                    <div class="sample-answer">
+                        <h4>Correct Answer:</h4>
+                        <pre><%= q.correctAnswer %></pre>
+                    </div>
+                    <div class="key-points">
+                        <h4>Key Points:</h4>
+                        <ul>
+                            <% q.keyPoints.forEach(point => { %>
+                                <li><%= point %></li>
+                            <% }); %>
+                        </ul>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+        
+        <a href="/" class="home-button">Start New Test</a>
+    </div>
+</body>
+</html>
