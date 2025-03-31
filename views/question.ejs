@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.14/ace.js"></script>
+</head>
+<body>
+    <div class="container question-container">
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress" style="width: <%= progress %>%;"></div>
+            </div>
+            <div class="progress-text">Question <%= questionNumber %> of <%= totalQuestions %></div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-header">
+                <span class="difficulty-badge <%= question.id.includes('easy') ? 'easy' : question.id.includes('medium') ? 'medium' : 'hard' %>">
+                    <%= question.id.includes('easy') ? 'Easy' : question.id.includes('medium') ? 'Medium' : 'Hard' %>
+                </span>
+                <span class="marks">Marks: <%= question.marks %></span>
+                <span class="time-limit">Time: <%= question.timeLimit %> min</span>
+            </div>
+
+            <h2 class="question-text"><%= question.question %></h2>
+
+            <form action="/submit-answer/<%= sessionId %>" method="POST">
+                <label for="language">Select Language:</label>
+                <select id="language" name="language">
+                    <option value="python">Python</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="nodejs">Node.js</option>
+                    <option value="golang">Go</option>
+                    <option value="rust">Rust</option>
+                    <option value="cpp">C++</option>
+                    <option value="java">Java</option>
+                </select>
+
+                <div id="editor" style="height: 400px; width: 100%; border: 1px solid #ddd;"></div>
+                <textarea name="answer" id="code" hidden></textarea>
+
+                <div class="action-buttons">
+                    <button type="submit" name="action" value="submit" class="btn-submit">Submit Answer</button>
+                    <button type="submit" name="action" value="skip" class="btn-skip">Skip Question</button>
+                    <button type="submit" name="action" value="end-test" class="btn-end">End Test</button>
+                </div>
+            </form>
+
+            <div class="timer" data-time-limit="<%= question.timeLimit %>">
+                Time remaining: <%= question.timeLimit %>:00
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/javascript");
+
+        document.getElementById("language").addEventListener("change", function () {
+            const mode = this.value === "cpp" ? "c_cpp" : this.value;
+            editor.session.setMode("ace/mode/" + mode);
+        });
+
+        const form = document.querySelector("form");
+        form.addEventListener("submit", function () {
+            document.getElementById("code").value = editor.getValue();
+        });
+    </script>
+     <script src="/script.js"></script>
+</body>
+</html>
